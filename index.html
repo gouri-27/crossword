@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -30,10 +31,6 @@
       color: #164b36;
     }
 
-    .header h1 span {
-      margin-right: 10px;
-    }
-
     .game-container {
       max-width: 1100px;
       margin: 0 auto;
@@ -59,7 +56,6 @@
       background: #173f2b;
     }
 
-
     .cell {
       width: 34px;
       height: 34px;
@@ -70,7 +66,6 @@
 
       position: relative;
     }
-
 
     .cell.active {
       background: #ffffff;
@@ -104,6 +99,11 @@
 
     .cell input:focus {
       background: #f4ecd9;
+    }
+
+    .cell input:disabled {
+      cursor: not-allowed;
+      opacity: 1;
     }
 
     .number {
@@ -160,6 +160,7 @@
       text-align: center;
 
       margin-top: 30px;
+      margin-bottom: 40px;
     }
 
     .submit-btn {
@@ -178,32 +179,70 @@
       font-weight: 600;
 
       cursor: pointer;
+
+      transition: 0.2s ease;
     }
 
     .submit-btn:hover {
       background: #0f3828;
+
+      transform: translateY(-1px);
     }
 
     .submit-btn:disabled {
       background: #999999;
 
       cursor: not-allowed;
+
+      transform: none;
     }
 
     .message {
-      margin-top: 18px;
+      margin: 25px auto 0;
+
+      max-width: 650px;
+
+      padding: 22px 25px;
 
       font-size: 16px;
 
-      font-weight: 600;
+      line-height: 1.6;
+
+      font-weight: 500;
+
+      border-radius: 12px;
+
+      text-align: center;
     }
 
     .success {
-      color: #217346;
+      color: #164b36;
+
+      background: #eaf5ed;
+
+      border: 1px solid #b9d9c3;
+    }
+
+    .success-title {
+      font-size: 22px;
+
+      font-weight: 800;
+
+      letter-spacing: 1px;
+
+      margin-bottom: 12px;
+    }
+
+    .success-text strong {
+      font-weight: 800;
     }
 
     .error {
       color: #a83232;
+
+      background: #fff0f0;
+
+      border: 1px solid #e0b5b5;
     }
 
     @media (max-width: 700px) {
@@ -226,23 +265,27 @@
         padding: 20px;
       }
 
-    }
+      .message {
+        font-size: 15px;
 
+        padding: 20px;
+      }
+
+    }
   </style>
 </head>
 
 
 <body>
 
+
   <div class="header">
 
     <h1>
-      <span>🌺</span>
       Lexicon Crossword Edition
     </h1>
 
   </div>
-
 
 
   <div class="game-container">
@@ -257,6 +300,7 @@
 
     </div>
 
+
     <div class="clues">
 
       <h2>🧩 Clues</h2>
@@ -266,7 +310,7 @@
 
         <span class="clue-number">1.</span>
 
-A retailer uses historical sales, current demand, and lead times to determine how much stock each store should receive. The goal is to avoid both excess inventory and products going out of stock.
+        A retailer uses historical sales, current demand, and lead times to determine how much stock each store should receive. The goal is to avoid both excess inventory and products going out of stock.
 
       </div>
 
@@ -275,7 +319,7 @@ A retailer uses historical sales, current demand, and lead times to determine ho
 
         <span class="clue-number">2.</span>
 
-An e-commerce platform automatically adjusts the price of a product depending on factors such as demand, available stock, competitor prices, and buying patterns.
+        An e-commerce platform automatically adjusts the price of a product depending on factors such as demand, available stock, competitor prices, and buying patterns.
 
       </div>
 
@@ -284,7 +328,7 @@ An e-commerce platform automatically adjusts the price of a product depending on
 
         <span class="clue-number">3.</span>
 
-A customer searches for “running shoes” on an e-commerce website. The platform analyzes relevance, popularity, user behavior, and product information to decide which products appear first.
+        A customer searches for “running shoes” on an e-commerce website. The platform analyzes relevance, popularity, user behavior, and product information to decide which products appear first.
 
       </div>
 
@@ -293,7 +337,7 @@ A customer searches for “running shoes” on an e-commerce website. The platfo
 
         <span class="clue-number">4.</span>
 
-A retailer analyzes thousands of transactions and discovers that customers who purchase certain products are significantly more likely to purchase another product in the same transaction.
+        A retailer analyzes thousands of transactions and discovers that customers who purchase certain products are significantly more likely to purchase another product in the same transaction.
 
       </div>
 
@@ -302,11 +346,12 @@ A retailer analyzes thousands of transactions and discovers that customers who p
 
         <span class="clue-number">5.</span>
 
-A company divides its customers into distinct groups based on characteristics such as purchasing behavior, preferences, demographics, and spending patterns, allowing it to tailor its marketing strategies.
+        A company divides its customers into distinct groups based on characteristics such as purchasing behavior, preferences, demographics, and spending patterns, allowing it to tailor its marketing strategies.
 
       </div>
 
     </div>
+
 
     <div class="submit-section">
 
@@ -317,6 +362,7 @@ A company divides its customers into distinct groups based on characteristics su
       >
         Submit Crossword
       </button>
+
 
       <div
         id="message"
@@ -338,20 +384,10 @@ A company divides its customers into distinct groups based on characteristics su
 CROSSWORD ANSWERS
 ============================================================
 
-1. INVENTORYOPTIMIZATION
-   21 letters
+These answers are ONLY used to construct the crossword
+grid and determine where the active cells are.
 
-2. DYNAMICPRICING
-   14 letters
-
-3. SEARCHRANKING
-   13 letters
-
-4. MARKETBASKETANALYSIS
-   20 letters
-
-5. CUSTOMERSEGMENTATION
-   20 letters
+The player's answers are NOT checked against them.
 
 ============================================================
 */
@@ -359,55 +395,6 @@ CROSSWORD ANSWERS
 
 const rows = 21;
 const cols = 20;
-
-
-
-/*
-============================================================
-WORD POSITIONS
-============================================================
-
-Grid coordinates start from 0.
-
-1. INVENTORYOPTIMIZATION
-   Starts: row 0, column 5
-   Direction: DOWN
-   Length: 21
-
-2. DYNAMICPRICING
-   Starts: row 7, column 0
-   Direction: DOWN
-   Length: 14
-
-3. SEARCHRANKING
-   Starts: row 5, column 19
-   Direction: DOWN
-   Length: 13
-
-4. MARKETBASKETANALYSIS
-   Starts: row 5, column 0
-   Direction: ACROSS
-   Length: 20
-
-5. CUSTOMERSEGMENTATION
-   Starts: row 13, column 0
-   Direction: ACROSS
-   Length: 20
-
-
-INTERSECTIONS:
-
-1 ↔ 4
-1 ↔ 5
-
-2 ↔ 5
-
-3 ↔ 4
-3 ↔ 5
-
-
-============================================================
-*/
 
 
 const words = [
@@ -455,40 +442,6 @@ const words = [
 ];
 
 
-
-/*
-============================================================
-VERIFY WORD LENGTHS
-============================================================
-*/
-
-const expectedLengths = {
-  1: 21,
-  2: 14,
-  3: 13,
-  4: 20,
-  5: 20
-};
-
-
-words.forEach(word => {
-
-  if (
-    word.answer.length !==
-    expectedLengths[word.number]
-  ) {
-
-    console.error(
-      `Word ${word.number} has incorrect length. ` +
-      `Expected ${expectedLengths[word.number]}, ` +
-      `got ${word.answer.length}.`
-    );
-
-  }
-
-});
-
-
 const grid = [];
 
 
@@ -519,6 +472,7 @@ for (
   }
 
 }
+
 
 words.forEach(word => {
 
@@ -552,13 +506,13 @@ words.forEach(word => {
   ) {
 
     console.error(
-      `Word ${word.number} (${word.answer}) ` +
-      `does not fit inside the grid.`
+      `Word ${word.number} (${word.answer}) does not fit inside the grid.`
     );
 
     return;
 
   }
+
 
   for (
     let i = 0;
@@ -585,6 +539,7 @@ words.forEach(word => {
 
     }
 
+
     if (
       !grid[r] ||
       !grid[r][c]
@@ -604,20 +559,20 @@ words.forEach(word => {
     const letter =
       word.answer[i];
 
+
     if (
       grid[r][c].active &&
       grid[r][c].letter !== letter
     ) {
 
       console.error(
-        `Letter conflict at row ${r}, ` +
-        `column ${c}. Existing: ` +
-        `${grid[r][c].letter}, New: ${letter}`
+        `Letter conflict at row ${r}, column ${c}.`
       );
 
       return;
 
     }
+
 
     grid[r][c].active = true;
 
@@ -649,13 +604,11 @@ for (
   r++
 ) {
 
-
   for (
     let c = 0;
     c < cols;
     c++
   ) {
-
 
     const cellData =
       grid[r][c];
@@ -675,7 +628,6 @@ for (
       cellData.active
     ) {
 
-
       cell.classList.add(
         "active"
       );
@@ -690,11 +642,14 @@ for (
             "span"
           );
 
+
         number.className =
           "number";
 
+
         number.textContent =
           cellData.numbers.join(",");
+
 
         cell.appendChild(
           number
@@ -730,11 +685,13 @@ for (
 
 
       /*
-      Correct letter is stored
-      internally.
+      The correct letter is stored internally
+      only because it is part of the crossword
+      construction.
 
-      It is NOT displayed.
+      IT IS NOT USED TO VALIDATE SUBMISSIONS.
       */
+
 
       input.dataset.answer =
         cellData.letter;
@@ -773,8 +730,7 @@ for (
         function(event) {
 
           if (
-            event.key ===
-            "Backspace" &&
+            event.key === "Backspace" &&
             this.value === ""
           ) {
 
@@ -814,6 +770,7 @@ function getInputs() {
   );
 
 }
+
 
 function moveToNextCell(
   row,
@@ -889,61 +846,140 @@ function moveToPreviousCell(
 }
 
 
+/*
+============================================================
+SUBMIT
+============================================================
+
+IMPORTANT:
+
+There is NO answer validation here.
+
+The only requirement is that every active cell
+has something entered in it.
+
+============================================================
+*/
+
+
 function submitCrossword() {
 
-  const inputs = getInputs();
+  const inputs =
+    getInputs();
 
-  const message = document.getElementById("message");
 
-  const submitBtn = document.getElementById("submitBtn");
+  const message =
+    document.getElementById(
+      "message"
+    );
 
-  const incomplete = inputs.some(
-    input => input.value.trim() === ""
-  );
 
-  if (incomplete) {
+  const submitBtn =
+    document.getElementById(
+      "submitBtn"
+    );
 
-    message.textContent =
-      "👀 Nice try… but you haven't filled in the whole crossword yet.";
 
-    message.className = "message error";
+  /*
+  Check only whether all cells are filled.
+  */
+
+
+  const incomplete =
+    inputs.some(
+      input =>
+        input.value.trim() === ""
+    );
+
+
+  if (
+    incomplete
+  ) {
+
+    message.innerHTML = `
+      👀 <strong>Nice try...</strong>
+      <br>
+      You haven't filled in the whole crossword yet.
+      <br><br>
+      Finish it first. I believe in you. 😌
+    `;
+
+    message.className =
+      "message error";
+
 
     return;
+
   }
 
+
+  /*
+  NO ANSWER CHECKING.
+
+  Any completed crossword is accepted.
+  */
+
+
   message.innerHTML = `
-    <div class="success-title">💅 SUBMISSION LOCKED</div>
+
+    <div class="success-title">
+      💅 SUBMISSION LOCKED
+    </div>
 
     <div class="success-text">
+
       Well, well, well… look who thinks they cracked it. 😏
+
       <br><br>
+
       Your answers are officially in.
       <strong>No edits. No take-backs.</strong>
+
       <br><br>
+
       Now let’s see if those AI instincts were actually
-      <strong>elite</strong> or just confidently chaotic. 💀🔥
+      <strong>elite</strong>
+      or just confidently chaotic. 💀🔥
+
       <br><br>
+
       Good luck. You’re gonna need it. 😉
+
       <br><br>
-      <strong>📸 Take a screenshot and submit it through the form.</strong>
+
+      <strong>
+        📸 Take a screenshot and submit it through the form.
+      </strong>
+
     </div>
+
   `;
 
-  message.className = "message success";
-
-  inputs.forEach(input => {
-    input.disabled = true;
-  });
-
-  submitBtn.disabled = true;
-}
-  message.textContent =
-    "Some answers are incorrect. Please review your entries.";
 
   message.className =
-    "message error";
+    "message success";
+
+
+  /*
+  Lock the crossword after submission.
+  */
+
+
+  inputs.forEach(
+    input => {
+
+      input.disabled =
+        true;
+
+    }
+  );
+
+
+  submitBtn.disabled =
+    true;
 
 }
+
 
 </script>
 
