@@ -1,160 +1,961 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Onam AI Crossword</title>
-<style>
-body{
-  font-family:Arial,sans-serif;
-  background:#f7f3e8;
-  margin:20px;
-}
-h1{text-align:center;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-.wrapper{
-  display:flex;
-  gap:30px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
+  <title>Onam Special AI Crossword</title>
 
-#grid{
-  display:grid;
-  grid-template-columns:repeat(25,32px);
-  grid-template-rows:repeat(25,32px);
-  gap:2px;
-  background:#2d5a3d;
-  padding:8px;
-}
-
-.cell{background:#fff;position:relative;}
-.block{background:#23452f;}
-
-input{
-  width:32px;
-  height:32px;
-  border:none;
-  text-align:center;
-  font-size:18px;
-  font-weight:bold;
-  text-transform:uppercase;
-  outline:none;
-}
-
-.num{
-  position:absolute;
-  top:1px;
-  left:2px;
-  font-size:9px;
-  color:#666;
-}
-
-.clues{
-  width:350px;
-  font-size:14px;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  margin-top:15px;
-  background:#2d5a3d;
-  color:#fff;
-  border:none;
-  cursor:pointer;
-  border-radius:6px;
-}
-</style>
-</head>
-<body>
-
-<h1>🪷 Onam Special Crossword</h1>
-
-<div class="wrapper">
-  <div id="grid"></div>
-
-  <div class="clues">
-    <h3>Across</h3>
-    <p><b>1.</b> AI decides how many pookalam kits to send to each store.</p>
-    <p><b>3.</b> Prices change based on demand, stock and trends.</p>
-    <p><b>5.</b> Intelligent ranking shows the most relevant festive products.</p>
-
-    <h3>Down</h3>
-    <p><b>2.</b> Divides customers into groups for personalized offers.</p>
-    <p><b>4.</b> Finds products frequently purchased together.</p>
-
-    <button id="submit">Submit</button>
-  </div>
-</div>
-
-<script>
-const SIZE = 25;
-
-const words = [
-  // Across
-  {n:1,dir:"A",row:12,col:2,answer:"INVENTORYOPTIMIZATION"},
-  {n:3,dir:"A",row:7,col:5,answer:"DYNAMICPRICING"},
-  {n:5,dir:"A",row:18,col:15,answer:"SEARCHRANKING"},
-
-  // Down
-  {n:2,dir:"D",row:7,col:15,answer:"CUSTOMERSEGMENTATION"},
-  {n:4,dir:"D",row:0,col:8,answer:"MARKETBASKETANALYSIS"}
-];
-
-const active={};
-const numbers={};
-
-words.forEach(w=>{
-  [...w.answer].forEach((ch,i)=>{
-    const r=w.row+(w.dir==="D"?i:0);
-    const c=w.col+(w.dir==="A"?i:0);
-    active[`${r},${c}`]=true;
-  });
-  numbers[`${w.row},${w.col}`]=w.n;
-});
-
-const grid=document.getElementById("grid");
-
-for(let r=0;r<SIZE;r++){
-  for(let c=0;c<SIZE;c++){
-    const d=document.createElement("div");
-
-    if(active[`${r},${c}`]){
-      d.className="cell";
-
-      if(numbers[`${r},${c}`]){
-        const n=document.createElement("div");
-        n.className="num";
-        n.textContent=numbers[`${r},${c}`];
-        d.appendChild(n);
-      }
-
-      const input=document.createElement("input");
-      input.maxLength=1;
-      input.oninput=e=>{
-        e.target.value=e.target.value.replace(/[^a-z]/gi,"").toUpperCase();
-      };
-      d.appendChild(input);
-
-    }else{
-      d.className="cell block";
+  <style>
+    * {
+      box-sizing: border-box;
     }
 
-    grid.appendChild(d);
-  }
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f8f3e8;
+      color: #173f2b;
+    }
 
-document.getElementById("submit").onclick=()=>{
-  document.querySelectorAll("input").forEach(i=>i.disabled=true);
-  document.getElementById("submit").disabled=true;
-  localStorage.setItem("onam-crossword-submitted","yes");
+    .header {
+      text-align: center;
+      padding: 38px 20px 28px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 38px;
+      font-weight: 700;
+      color: #164b36;
+    }
+
+    .header h1 span {
+      margin-right: 10px;
+    }
+
+    .game-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .crossword-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      padding: 20px 0 35px;
+    }
+
+    .crossword {
+      display: grid;
+
+      grid-template-columns: repeat(20, 34px);
+      grid-template-rows: repeat(21, 34px);
+
+      width: max-content;
+
+      margin: 0 auto;
+
+      background: #173f2b;
+    }
+
+    .cell {
+      width: 34px;
+      height: 34px;
+
+      background: #173f2b;
+
+      border: 1px solid #28563e;
+
+      position: relative;
+    }
+
+    .cell.active {
+      background: #ffffff;
+
+      border: 1px solid #173f2b;
+    }
+
+    .cell input {
+      width: 100%;
+      height: 100%;
+
+      border: none;
+      outline: none;
+
+      background: transparent;
+
+      text-align: center;
+
+      font-size: 20px;
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      color: #173f2b;
+
+      padding: 5px 0 0;
+
+      caret-color: #173f2b;
+    }
+
+    .cell input:focus {
+      background: #f4ecd9;
+    }
+
+    .number {
+      position: absolute;
+
+      top: 2px;
+      left: 3px;
+
+      font-size: 9px;
+
+      font-weight: 600;
+
+      color: #173f2b;
+
+      pointer-events: none;
+
+      z-index: 2;
+    }
+
+    .clues {
+      margin-top: 30px;
+
+      background: #ffffff;
+
+      border-radius: 12px;
+
+      padding: 25px;
+
+      box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .clues h2 {
+      margin-top: 0;
+
+      color: #164b36;
+
+      font-size: 25px;
+    }
+
+    .clue {
+      margin-bottom: 20px;
+
+      line-height: 1.6;
+    }
+
+    .clue-number {
+      font-weight: 700;
+
+      color: #164b36;
+    }
+
+    .submit-section {
+      text-align: center;
+
+      margin-top: 30px;
+    }
+
+    .submit-btn {
+      background: #164b36;
+
+      color: #ffffff;
+
+      border: none;
+
+      border-radius: 8px;
+
+      padding: 13px 32px;
+
+      font-size: 16px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #0f3828;
+    }
+
+    .submit-btn:disabled {
+      background: #999999;
+
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 18px;
+
+      font-size: 16px;
+
+      font-weight: 600;
+    }
+
+    .success {
+      color: #217346;
+    }
+
+    .error {
+      color: #a83232;
+    }
+
+    @media (max-width: 700px) {
+
+      .header h1 {
+        font-size: 28px;
+      }
+
+      .game-container {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .crossword {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+
+      .clues {
+        padding: 20px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <div class="header">
+
+    <h1>
+      <span>🌺</span>
+      Onam Special AI Crossword
+    </h1>
+
+  </div>
+
+
+
+  <div class="game-container">
+
+    <div class="crossword-wrapper">
+
+      <div
+        id="crossword"
+        class="crossword"
+      ></div>
+
+    </div>
+
+    <div class="clues">
+
+      <h2>🧩 Clues</h2>
+
+
+      <div class="clue">
+
+        <span class="clue-number">1.</span>
+
+        During the Onam rush, a retailer uses AI to decide how many
+        pookalam kits to send to each store so shelves are neither empty
+        nor overstocked.
+
+      </div>
+
+
+      <div class="clue">
+
+        <span class="clue-number">2.</span>
+
+        An online store offers different prices for banana chips and
+        festive gift hampers based on demand, stock, and customer trends
+        during Onam.
+
+      </div>
+
+
+      <div class="clue">
+
+        <span class="clue-number">3.</span>
+
+        Instead of scrolling through hundreds of products, shoppers
+        instantly find the most relevant Onam items because the website
+        intelligently ranks festive products in search results.
+
+      </div>
+
+
+      <div class="clue">
+
+        <span class="clue-number">4.</span>
+
+        A supermarket studies the order in which customers buy flowers,
+        rice, jaggery, and coconut during Onam to discover products that
+        are frequently purchased together.
+
+      </div>
+
+
+      <div class="clue">
+
+        <span class="clue-number">5.</span>
+
+        Before launching its Onam campaign, the marketing team divides
+        customers into groups such as families, students, and premium
+        shoppers to send personalized festive offers.
+
+      </div>
+
+    </div>
+
+
+    <div class="submit-section">
+
+      <button
+        id="submitBtn"
+        class="submit-btn"
+        onclick="submitCrossword()"
+      >
+        Submit Crossword
+      </button>
+
+      <div
+        id="message"
+        class="message"
+      ></div>
+
+    </div>
+
+
+  </div>
+
+
+
+<script>
+
+1. INVENTORYOPTIMIZATION
+   21 letters
+
+2. DYNAMICPRICING
+   14 letters
+
+3. SEARCHRANKING
+   13 letters
+
+4. MARKETBASKETANALYSIS
+   20 letters
+
+5. CUSTOMERSEGMENTATION
+   20 letters
+
+
+
+const rows = 21;
+const cols = 20;
+
+
+Grid coordinates start from 0.
+
+1. INVENTORYOPTIMIZATION
+   Starts: row 0, column 5
+   Direction: DOWN
+   Length: 21
+
+2. DYNAMICPRICING
+   Starts: row 7, column 0
+   Direction: DOWN
+   Length: 14
+
+3. SEARCHRANKING
+   Starts: row 5, column 19
+   Direction: DOWN
+   Length: 13
+
+4. MARKETBASKETANALYSIS
+   Starts: row 5, column 0
+   Direction: ACROSS
+   Length: 20
+
+5. CUSTOMERSEGMENTATION
+   Starts: row 13, column 0
+   Direction: ACROSS
+   Length: 20
+
+
+INTERSECTIONS:
+
+1 ↔ 4
+1 ↔ 5
+
+2 ↔ 5
+
+3 ↔ 4
+3 ↔ 5
+
+
+const words = [
+
+  {
+    number: 1,
+    answer: "INVENTORYOPTIMIZATION",
+    row: 0,
+    col: 5,
+    direction: "down"
+  },
+
+  {
+    number: 2,
+    answer: "DYNAMICPRICING",
+    row: 7,
+    col: 0,
+    direction: "down"
+  },
+
+  {
+    number: 3,
+    answer: "SEARCHRANKING",
+    row: 5,
+    col: 19,
+    direction: "down"
+  },
+
+  {
+    number: 4,
+    answer: "MARKETBASKETANALYSIS",
+    row: 5,
+    col: 0,
+    direction: "across"
+  },
+
+  {
+    number: 5,
+    answer: "CUSTOMERSEGMENTATION",
+    row: 13,
+    col: 0,
+    direction: "across"
+  }
+
+];
+
+const expectedLengths = {
+  1: 21,
+  2: 14,
+  3: 13,
+  4: 20,
+  5: 20
 };
 
-if(localStorage.getItem("onam-crossword-submitted")){
-  document.querySelectorAll("input").forEach(i=>i.disabled=true);
-  document.getElementById("submit").disabled=true;
+
+words.forEach(word => {
+
+  if (
+    word.answer.length !==
+    expectedLengths[word.number]
+  ) {
+
+    console.error(
+      `Word ${word.number} has incorrect length. ` +
+      `Expected ${expectedLengths[word.number]}, ` +
+      `got ${word.answer.length}.`
+    );
+
+  }
+
+});
+
+const grid = [];
+
+
+for (
+  let r = 0;
+  r < rows;
+  r++
+) {
+
+  grid[r] = [];
+
+  for (
+    let c = 0;
+    c < cols;
+    c++
+  ) {
+
+    grid[r][c] = {
+
+      active: false,
+
+      letter: "",
+
+      numbers: []
+
+    };
+
+  }
+
 }
+
+words.forEach(word => {
+
+  let endRow = word.row;
+
+  let endCol = word.col;
+
+
+  if (
+    word.direction === "across"
+  ) {
+
+    endCol +=
+      word.answer.length - 1;
+
+  }
+
+  else {
+
+    endRow +=
+      word.answer.length - 1;
+
+  }
+
+  if (
+    word.row < 0 ||
+    word.col < 0 ||
+    endRow >= rows ||
+    endCol >= cols
+  ) {
+
+    console.error(
+      `Word ${word.number} (${word.answer}) ` +
+      `does not fit inside the grid.`
+    );
+
+    return;
+
+  }
+
+  for (
+    let i = 0;
+    i < word.answer.length;
+    i++
+  ) {
+
+    let r = word.row;
+
+    let c = word.col;
+
+
+    if (
+      word.direction === "across"
+    ) {
+
+      c += i;
+
+    }
+
+    else {
+
+      r += i;
+
+    }
+
+    if (
+      !grid[r] ||
+      !grid[r][c]
+    ) {
+
+      console.error(
+        "Invalid grid cell:",
+        r,
+        c
+      );
+
+      return;
+
+    }
+
+
+    const letter =
+      word.answer[i];
+    if (
+      grid[r][c].active &&
+      grid[r][c].letter !== letter
+    ) {
+
+      console.error(
+        `Letter conflict at row ${r}, ` +
+        `column ${c}. Existing: ` +
+        `${grid[r][c].letter}, New: ${letter}`
+      );
+
+      return;
+
+    }
+
+    grid[r][c].active = true;
+
+    grid[r][c].letter = letter;
+
+    if (i === 0) {
+
+      grid[r][c].numbers.push(
+        word.number
+      );
+
+    }
+
+  }
+
+});
+
+const crossword =
+  document.getElementById(
+    "crossword"
+  );
+
+
+for (
+  let r = 0;
+  r < rows;
+  r++
+) {
+
+
+  for (
+    let c = 0;
+    c < cols;
+    c++
+  ) {
+
+
+    const cellData =
+      grid[r][c];
+
+
+    const cell =
+      document.createElement(
+        "div"
+      );
+
+
+    cell.className =
+      "cell";
+
+    if (
+      cellData.active
+    ) {
+
+
+      cell.classList.add(
+        "active"
+      );
+
+      if (
+        cellData.numbers.length > 0
+      ) {
+
+        const number =
+          document.createElement(
+            "span"
+          );
+
+        number.className =
+          "number";
+
+        number.textContent =
+          cellData.numbers.join(",");
+
+        cell.appendChild(
+          number
+        );
+
+      }
+
+      const input =
+        document.createElement(
+          "input"
+        );
+
+
+      input.type =
+        "text";
+
+
+      input.maxLength =
+        1;
+
+
+      input.autocomplete =
+        "off";
+
+
+      input.dataset.row =
+        r;
+
+
+      input.dataset.col =
+        c;
+
+
+      /*
+      Correct letter is stored
+      internally.
+
+      It is NOT displayed.
+      */
+
+      input.dataset.answer =
+        cellData.letter;
+
+      input.addEventListener(
+        "input",
+        function () {
+
+          this.value =
+            this.value
+              .replace(
+                /[^a-zA-Z]/g,
+                ""
+              )
+              .toUpperCase();
+
+
+          if (
+            this.value.length === 1
+          ) {
+
+            moveToNextCell(
+              r,
+              c
+            );
+
+          }
+
+        }
+      );
+
+      input.addEventListener(
+        "keydown",
+        function(event) {
+
+          if (
+            event.key ===
+            "Backspace" &&
+            this.value === ""
+          ) {
+
+            moveToPreviousCell(
+              r,
+              c
+            );
+
+          }
+
+        }
+      );
+
+
+      cell.appendChild(
+        input
+      );
+
+    }
+
+
+    crossword.appendChild(
+      cell
+    );
+
+  }
+
+}
+
+function getInputs() {
+
+  return Array.from(
+    document.querySelectorAll(
+      ".cell.active input"
+    )
+  );
+
+}
+
+function moveToNextCell(
+  row,
+  col
+) {
+
+  const inputs =
+    getInputs();
+
+
+  const currentIndex =
+    inputs.findIndex(
+      input =>
+
+        Number(
+          input.dataset.row
+        ) === row &&
+
+        Number(
+          input.dataset.col
+        ) === col
+    );
+
+
+  if (
+    currentIndex >= 0 &&
+    currentIndex <
+      inputs.length - 1
+  ) {
+
+    inputs[
+      currentIndex + 1
+    ].focus();
+
+  }
+
+}
+
+function moveToPreviousCell(
+  row,
+  col
+) {
+
+  const inputs =
+    getInputs();
+
+
+  const currentIndex =
+    inputs.findIndex(
+      input =>
+
+        Number(
+          input.dataset.row
+        ) === row &&
+
+        Number(
+          input.dataset.col
+        ) === col
+    );
+
+
+  if (
+    currentIndex > 0
+  ) {
+
+    inputs[
+      currentIndex - 1
+    ].focus();
+
+  }
+
+}
+
+function submitCrossword() {
+
+
+  const inputs =
+    getInputs();
+
+
+  const message =
+    document.getElementById(
+      "message"
+    );
+
+
+  const submitBtn =
+    document.getElementById(
+      "submitBtn"
+    );
+
+  const incomplete =
+    inputs.some(
+      input =>
+        input.value.trim() === ""
+    );
+
+
+  if (
+    incomplete
+  ) {
+
+    message.textContent =
+      "Please complete the crossword before submitting.";
+
+    message.className =
+      "message error";
+
+    return;
+
+  }
+
+  let correct = true;
+
+
+  inputs.forEach(
+    input => {
+
+      if (
+        input.value.toUpperCase() !==
+        input.dataset.answer
+      ) {
+
+        correct = false;
+
+      }
+
+    }
+  );
+
+  if (
+    correct
+  ) {
+
+    message.textContent =
+      "🎉 Congratulations! You completed the Onam Special AI Crossword!";
+
+    message.className =
+      "message success";
+
+
+    /*
+    Lock all cells after successful
+    submission.
+    */
+
+    inputs.forEach(
+      input => {
+
+        input.disabled = true;
+
+      }
+    );
+
+
+    submitBtn.disabled =
+      true;
+
+
+    return;
+
+  }
+
+  message.textContent =
+    "Some answers are incorrect. Please review your entries.";
+
+  message.className =
+    "message error";
+
+}
+
 </script>
 
 </body>
