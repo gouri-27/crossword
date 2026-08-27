@@ -18,10 +18,6 @@
       color: #173f2b;
     }
 
-    /* =========================================
-       HEADER
-    ========================================= */
-
     .header {
       text-align: center;
       padding: 38px 20px 28px;
@@ -38,37 +34,17 @@
       margin-right: 10px;
     }
 
-
-    /* =========================================
-       MAIN CONTAINER
-    ========================================= */
-
     .game-container {
       max-width: 1100px;
       margin: 0 auto;
       padding: 20px;
     }
 
-
-    /* =========================================
-       CROSSWORD WRAPPER
-    ========================================= */
-
     .crossword-wrapper {
       width: 100%;
       overflow-x: auto;
       padding: 20px 0 35px;
     }
-
-
-    /* =========================================
-       CROSSWORD GRID
-
-       EXACT GRID:
-
-       20 COLUMNS
-       21 ROWS
-    ========================================= */
 
     .crossword {
       display: grid;
@@ -84,10 +60,6 @@
     }
 
 
-    /* =========================================
-       DEFAULT / BLOCKED CELL
-    ========================================= */
-
     .cell {
       width: 34px;
       height: 34px;
@@ -100,20 +72,11 @@
     }
 
 
-    /* =========================================
-       ACTIVE CROSSWORD CELL
-    ========================================= */
-
     .cell.active {
       background: #ffffff;
 
       border: 1px solid #173f2b;
     }
-
-
-    /* =========================================
-       INPUT
-    ========================================= */
 
     .cell input {
       width: 100%;
@@ -143,11 +106,6 @@
       background: #f4ecd9;
     }
 
-
-    /* =========================================
-       CLUE NUMBER
-    ========================================= */
-
     .number {
       position: absolute;
 
@@ -164,11 +122,6 @@
 
       z-index: 2;
     }
-
-
-    /* =========================================
-       CLUES
-    ========================================= */
 
     .clues {
       margin-top: 30px;
@@ -202,11 +155,6 @@
 
       color: #164b36;
     }
-
-
-    /* =========================================
-       SUBMIT
-    ========================================= */
 
     .submit-section {
       text-align: center;
@@ -242,11 +190,6 @@
       cursor: not-allowed;
     }
 
-
-    /* =========================================
-       MESSAGE
-    ========================================= */
-
     .message {
       margin-top: 18px;
 
@@ -262,11 +205,6 @@
     .error {
       color: #a83232;
     }
-
-
-    /* =========================================
-       MOBILE
-    ========================================= */
 
     @media (max-width: 700px) {
 
@@ -296,16 +234,11 @@
 
 <body>
 
-
-  <!-- =========================================
-       HEADER
-  ========================================= -->
-
   <div class="header">
 
     <h1>
       <span>🌺</span>
-      Onam Special AI Crossword
+      Lexicon Crossword Edition
     </h1>
 
   </div>
@@ -314,10 +247,6 @@
 
   <div class="game-container">
 
-
-    <!-- =========================================
-         CROSSWORD
-    ========================================= -->
 
     <div class="crossword-wrapper">
 
@@ -328,12 +257,6 @@
 
     </div>
 
-
-
-    <!-- =========================================
-         CLUES
-    ========================================= -->
-
     <div class="clues">
 
       <h2>🧩 Clues</h2>
@@ -343,9 +266,7 @@
 
         <span class="clue-number">1.</span>
 
-        During the Onam rush, a retailer uses AI to decide how many
-        pookalam kits to send to each store so shelves are neither empty
-        nor overstocked.
+A retailer uses historical sales, current demand, and lead times to determine how much stock each store should receive. The goal is to avoid both excess inventory and products going out of stock.
 
       </div>
 
@@ -354,9 +275,7 @@
 
         <span class="clue-number">2.</span>
 
-        An online store offers different prices for banana chips and
-        festive gift hampers based on demand, stock, and customer trends
-        during Onam.
+An e-commerce platform automatically adjusts the price of a product depending on factors such as demand, available stock, competitor prices, and buying patterns.
 
       </div>
 
@@ -365,9 +284,7 @@
 
         <span class="clue-number">3.</span>
 
-        Instead of scrolling through hundreds of products, shoppers
-        instantly find the most relevant Onam items because the website
-        intelligently ranks festive products in search results.
+A customer searches for “running shoes” on an e-commerce website. The platform analyzes relevance, popularity, user behavior, and product information to decide which products appear first.
 
       </div>
 
@@ -376,9 +293,7 @@
 
         <span class="clue-number">4.</span>
 
-        A supermarket studies the order in which customers buy flowers,
-        rice, jaggery, and coconut during Onam to discover products that
-        are frequently purchased together.
+A retailer analyzes thousands of transactions and discovers that customers who purchase certain products are significantly more likely to purchase another product in the same transaction.
 
       </div>
 
@@ -387,19 +302,11 @@
 
         <span class="clue-number">5.</span>
 
-        Before launching its Onam campaign, the marketing team divides
-        customers into groups such as families, students, and premium
-        shoppers to send personalized festive offers.
+A company divides its customers into distinct groups based on characteristics such as purchasing behavior, preferences, demographics, and spending patterns, allowing it to tailor its marketing strategies.
 
       </div>
 
     </div>
-
-
-
-    <!-- =========================================
-         SUBMIT
-    ========================================= -->
 
     <div class="submit-section">
 
@@ -582,13 +489,6 @@ words.forEach(word => {
 });
 
 
-
-/*
-============================================================
-CREATE EMPTY GRID
-============================================================
-*/
-
 const grid = [];
 
 
@@ -620,22 +520,7 @@ for (
 
 }
 
-
-
-/*
-============================================================
-PLACE WORDS
-============================================================
-*/
-
 words.forEach(word => {
-
-
-  /*
-  -----------------------------------------------
-  Calculate ending position
-  -----------------------------------------------
-  */
 
   let endRow = word.row;
 
@@ -659,13 +544,6 @@ words.forEach(word => {
   }
 
 
-
-  /*
-  -----------------------------------------------
-  Safety check
-  -----------------------------------------------
-  */
-
   if (
     word.row < 0 ||
     word.col < 0 ||
@@ -681,14 +559,6 @@ words.forEach(word => {
     return;
 
   }
-
-
-
-  /*
-  -----------------------------------------------
-  Place every letter
-  -----------------------------------------------
-  */
 
   for (
     let i = 0;
@@ -715,13 +585,6 @@ words.forEach(word => {
 
     }
 
-
-    /*
-    ---------------------------------------------
-    Safety check for cell
-    ---------------------------------------------
-    */
-
     if (
       !grid[r] ||
       !grid[r][c]
@@ -741,13 +604,6 @@ words.forEach(word => {
     const letter =
       word.answer[i];
 
-
-    /*
-    ---------------------------------------------
-    Check crossing letters
-    ---------------------------------------------
-    */
-
     if (
       grid[r][c].active &&
       grid[r][c].letter !== letter
@@ -763,24 +619,10 @@ words.forEach(word => {
 
     }
 
-
-    /*
-    ---------------------------------------------
-    Activate cell
-    ---------------------------------------------
-    */
-
     grid[r][c].active = true;
 
     grid[r][c].letter = letter;
 
-
-    /*
-    ---------------------------------------------
-    Add clue number only to
-    starting cell
-    ---------------------------------------------
-    */
 
     if (i === 0) {
 
@@ -794,13 +636,6 @@ words.forEach(word => {
 
 });
 
-
-
-/*
-============================================================
-CREATE CROSSWORD HTML
-============================================================
-*/
 
 const crossword =
   document.getElementById(
@@ -836,12 +671,6 @@ for (
       "cell";
 
 
-    /*
-    -----------------------------------------------
-    Only create inputs for active cells
-    -----------------------------------------------
-    */
-
     if (
       cellData.active
     ) {
@@ -851,12 +680,6 @@ for (
         "active"
       );
 
-
-      /*
-      ---------------------------------------------
-      Clue number
-      ---------------------------------------------
-      */
 
       if (
         cellData.numbers.length > 0
@@ -879,12 +702,6 @@ for (
 
       }
 
-
-      /*
-      ---------------------------------------------
-      Input
-      ---------------------------------------------
-      */
 
       const input =
         document.createElement(
@@ -923,12 +740,6 @@ for (
         cellData.letter;
 
 
-      /*
-      ---------------------------------------------
-      Input handling
-      ---------------------------------------------
-      */
-
       input.addEventListener(
         "input",
         function () {
@@ -956,12 +767,6 @@ for (
         }
       );
 
-
-      /*
-      ---------------------------------------------
-      Backspace
-      ---------------------------------------------
-      */
 
       input.addEventListener(
         "keydown",
@@ -1000,13 +805,6 @@ for (
 }
 
 
-
-/*
-============================================================
-GET ALL ACTIVE INPUTS
-============================================================
-*/
-
 function getInputs() {
 
   return Array.from(
@@ -1016,14 +814,6 @@ function getInputs() {
   );
 
 }
-
-
-
-/*
-============================================================
-MOVE TO NEXT CELL
-============================================================
-*/
 
 function moveToNextCell(
   row,
@@ -1063,13 +853,6 @@ function moveToNextCell(
 }
 
 
-
-/*
-============================================================
-MOVE TO PREVIOUS CELL
-============================================================
-*/
-
 function moveToPreviousCell(
   row,
   col
@@ -1106,13 +889,6 @@ function moveToPreviousCell(
 }
 
 
-
-/*
-============================================================
-SUBMIT CROSSWORD
-============================================================
-*/
-
 function submitCrossword() {
 
 
@@ -1130,13 +906,6 @@ function submitCrossword() {
     document.getElementById(
       "submitBtn"
     );
-
-
-  /*
-  -----------------------------------------------
-  Check if every cell is filled
-  -----------------------------------------------
-  */
 
   const incomplete =
     inputs.some(
@@ -1160,13 +929,6 @@ function submitCrossword() {
   }
 
 
-
-  /*
-  -----------------------------------------------
-  Check every answer
-  -----------------------------------------------
-  */
-
   let correct = true;
 
 
@@ -1186,28 +948,16 @@ function submitCrossword() {
   );
 
 
-
-  /*
-  -----------------------------------------------
-  Correct answer
-  -----------------------------------------------
-  */
-
   if (
     correct
   ) {
 
     message.textContent =
-      "🎉 Congratulations! You completed the Onam Special AI Crossword!";
+      "💅 Submission Locked **Well, well, well… look who thinks they cracked it. 😏** Your answers are officially in No edits. No take-backs. Now let’s see if your AI instincts are actually **elite** or just confidently chaotic. 💀🔥 **Good luck. You’re gonna need it. 😉**";
 
     message.className =
       "message success";
 
-
-    /*
-    Lock all cells after successful
-    submission.
-    */
 
     inputs.forEach(
       input => {
@@ -1225,14 +975,6 @@ function submitCrossword() {
     return;
 
   }
-
-
-
-  /*
-  -----------------------------------------------
-  Incorrect answer
-  -----------------------------------------------
-  */
 
   message.textContent =
     "Some answers are incorrect. Please review your entries.";
