@@ -891,91 +891,52 @@ function moveToPreviousCell(
 
 function submitCrossword() {
 
+  const inputs = getInputs();
 
-  const inputs =
-    getInputs();
+  const message = document.getElementById("message");
 
+  const submitBtn = document.getElementById("submitBtn");
 
-  const message =
-    document.getElementById(
-      "message"
-    );
-
-
-  const submitBtn =
-    document.getElementById(
-      "submitBtn"
-    );
-
-  const incomplete =
-    inputs.some(
-      input =>
-        input.value.trim() === ""
-    );
-
-
-  if (
-    incomplete
-  ) {
-
-    message.textContent =
-      "Please complete the crossword before submitting.";
-
-    message.className =
-      "message error";
-
-    return;
-
-  }
-
-
-  let correct = true;
-
-
-  inputs.forEach(
-    input => {
-
-      if (
-        input.value.toUpperCase() !==
-        input.dataset.answer
-      ) {
-
-        correct = false;
-
-      }
-
-    }
+  const incomplete = inputs.some(
+    input => input.value.trim() === ""
   );
 
-
-  if (
-    correct
-  ) {
+  if (incomplete) {
 
     message.textContent =
-      "💅 Submission Locked Well, well, well… look who thinks they cracked it😏 Your answers are officially in No edits. No take-backs. Now let’s see if your AI instincts are actually **elite** or just confidently chaotic. 💀🔥 Good luck. You’re gonna need it. 😉 Now take a screenshot and submit through the form";
+      "👀 Nice try… but you haven't filled in the whole crossword yet.";
 
-    message.className =
-      "message success";
-
-
-    inputs.forEach(
-      input => {
-
-        input.disabled = true;
-
-      }
-    );
-
-
-    submitBtn.disabled =
-      true;
-
+    message.className = "message error";
 
     return;
-
   }
 
+  message.innerHTML = `
+    <div class="success-title">💅 SUBMISSION LOCKED</div>
+
+    <div class="success-text">
+      Well, well, well… look who thinks they cracked it. 😏
+      <br><br>
+      Your answers are officially in.
+      <strong>No edits. No take-backs.</strong>
+      <br><br>
+      Now let’s see if those AI instincts were actually
+      <strong>elite</strong> or just confidently chaotic. 💀🔥
+      <br><br>
+      Good luck. You’re gonna need it. 😉
+      <br><br>
+      <strong>📸 Take a screenshot and submit it through the form.</strong>
+    </div>
+  `;
+
+  message.className = "message success";
+
+  inputs.forEach(input => {
+    input.disabled = true;
+  });
+
+  submitBtn.disabled = true;
+}
   message.textContent =
     "Some answers are incorrect. Please review your entries.";
 
