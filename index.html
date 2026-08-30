@@ -2,52 +2,297 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Lexicon Crossword Edition</title>
 
+
   <style>
+
     * {
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
       background: #f8f3e8;
+
       color: #173f2b;
     }
 
+
+    /* =========================================
+       HEADER
+    ========================================= */
+
     .header {
+
       text-align: center;
+
       padding: 38px 20px 28px;
     }
 
+
     .header h1 {
+
       margin: 0;
+
       font-size: 38px;
+
       font-weight: 700;
+
       color: #164b36;
     }
 
+
+    /* =========================================
+       START SCREEN
+    ========================================= */
+
+    .start-screen {
+
+      min-height: 100vh;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+
+      background: #f8f3e8;
+    }
+
+
+    .start-card {
+
+      width: 100%;
+
+      max-width: 500px;
+
+      background: #ffffff;
+
+      padding: 40px;
+
+      border-radius: 14px;
+
+      text-align: center;
+
+      box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .start-card h2 {
+
+      margin-top: 0;
+
+      color: #164b36;
+    }
+
+
+    .start-card p {
+
+      line-height: 1.6;
+    }
+
+
+    .start-card input {
+
+      width: 100%;
+
+      padding: 14px;
+
+      margin-top: 15px;
+
+      border: 1px solid #cccccc;
+
+      border-radius: 8px;
+
+      font-size: 16px;
+    }
+
+
+    .start-card input:focus {
+
+      outline: none;
+
+      border-color: #164b36;
+    }
+
+
+    .start-card button {
+
+      width: 100%;
+
+      margin-top: 15px;
+
+      padding: 14px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      background: #164b36;
+
+      color: #ffffff;
+
+      font-size: 16px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+    }
+
+
+    .start-card button:hover {
+
+      background: #0f3828;
+    }
+
+
+    .start-card button:disabled {
+
+      background: #999999;
+
+      cursor: not-allowed;
+    }
+
+
+    .email-error {
+
+      margin-top: 10px;
+
+      color: #a83232;
+
+      font-size: 14px;
+
+      font-weight: 600;
+    }
+
+
+    .challenge-info {
+
+      margin-top: 25px;
+
+      font-size: 14px;
+
+      color: #666666;
+    }
+
+
+    .hidden {
+
+      display: none;
+    }
+
+
+    /* =========================================
+       GAME CONTAINER
+    ========================================= */
+
     .game-container {
+
       max-width: 1100px;
+
       margin: 0 auto;
+
       padding: 20px;
     }
 
+
+    /* =========================================
+       TIMER
+    ========================================= */
+
+    .timer-container {
+
+      text-align: center;
+
+      margin-bottom: 25px;
+    }
+
+
+    .timer-label {
+
+      font-size: 16px;
+
+      font-weight: 600;
+
+      color: #164b36;
+
+      margin-bottom: 6px;
+    }
+
+
+    #timer {
+
+      display: inline-block;
+
+      min-width: 130px;
+
+      padding: 12px 24px;
+
+      background: #ffffff;
+
+      border: 2px solid #164b36;
+
+      border-radius: 10px;
+
+      font-size: 32px;
+
+      font-weight: 700;
+
+      color: #164b36;
+    }
+
+
+    #timer.warning {
+
+      color: #a83232;
+
+      border-color: #a83232;
+    }
+
+
+    /* =========================================
+       CROSSWORD
+    ========================================= */
+
     .crossword-wrapper {
+
       width: 100%;
+
       overflow-x: auto;
+
       padding: 20px 0 35px;
     }
 
+
     .crossword {
+
       display: grid;
 
-      grid-template-columns: repeat(20, 34px);
-      grid-template-rows: repeat(21, 34px);
+      grid-template-columns:
+        repeat(20, 34px);
+
+      grid-template-rows:
+        repeat(21, 34px);
 
       width: max-content;
 
@@ -56,8 +301,11 @@
       background: #173f2b;
     }
 
+
     .cell {
+
       width: 34px;
+
       height: 34px;
 
       background: #173f2b;
@@ -67,17 +315,23 @@
       position: relative;
     }
 
+
     .cell.active {
+
       background: #ffffff;
 
       border: 1px solid #173f2b;
     }
 
+
     .cell input {
+
       width: 100%;
+
       height: 100%;
 
       border: none;
+
       outline: none;
 
       background: transparent;
@@ -97,19 +351,27 @@
       caret-color: #173f2b;
     }
 
+
     .cell input:focus {
+
       background: #f4ecd9;
     }
 
+
     .cell input:disabled {
+
       cursor: not-allowed;
+
       opacity: 1;
     }
 
+
     .number {
+
       position: absolute;
 
       top: 2px;
+
       left: 3px;
 
       font-size: 9px;
@@ -123,7 +385,13 @@
       z-index: 2;
     }
 
+
+    /* =========================================
+       CLUES
+    ========================================= */
+
     .clues {
+
       margin-top: 30px;
 
       background: #ffffff;
@@ -136,7 +404,9 @@
         0 4px 15px rgba(0, 0, 0, 0.08);
     }
 
+
     .clues h2 {
+
       margin-top: 0;
 
       color: #164b36;
@@ -144,26 +414,39 @@
       font-size: 25px;
     }
 
+
     .clue {
+
       margin-bottom: 20px;
 
       line-height: 1.6;
     }
 
+
     .clue-number {
+
       font-weight: 700;
 
       color: #164b36;
     }
 
+
+    /* =========================================
+       SUBMIT
+    ========================================= */
+
     .submit-section {
+
       text-align: center;
 
       margin-top: 30px;
+
       margin-bottom: 40px;
     }
 
+
     .submit-btn {
+
       background: #164b36;
 
       color: #ffffff;
@@ -183,13 +466,17 @@
       transition: 0.2s ease;
     }
 
+
     .submit-btn:hover {
+
       background: #0f3828;
 
       transform: translateY(-1px);
     }
 
+
     .submit-btn:disabled {
+
       background: #999999;
 
       cursor: not-allowed;
@@ -197,7 +484,13 @@
       transform: none;
     }
 
+
+    /* =========================================
+       MESSAGE
+    ========================================= */
+
     .message {
+
       margin: 25px auto 0;
 
       max-width: 650px;
@@ -215,7 +508,9 @@
       text-align: center;
     }
 
+
     .success {
+
       color: #164b36;
 
       background: #eaf5ed;
@@ -223,7 +518,9 @@
       border: 1px solid #b9d9c3;
     }
 
+
     .success-title {
+
       font-size: 22px;
 
       font-weight: 800;
@@ -233,11 +530,15 @@
       margin-bottom: 12px;
     }
 
+
     .success-text strong {
+
       font-weight: 800;
     }
 
+
     .error {
+
       color: #a83232;
 
       background: #fff0f0;
@@ -245,39 +546,125 @@
       border: 1px solid #e0b5b5;
     }
 
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
     @media (max-width: 700px) {
 
       .header h1 {
+
         font-size: 28px;
       }
 
+
       .game-container {
+
         padding-left: 10px;
+
         padding-right: 10px;
       }
 
+
       .crossword {
+
         margin-left: 10px;
+
         margin-right: 10px;
       }
 
+
       .clues {
+
         padding: 20px;
       }
 
+
       .message {
+
         font-size: 15px;
 
         padding: 20px;
       }
 
+
+      .start-card {
+
+        padding: 30px 25px;
+      }
+
     }
+
   </style>
+
 </head>
 
 
 <body>
 
+
+  <!-- =========================================
+       START SCREEN
+  ========================================= -->
+
+  <div
+    id="startScreen"
+    class="start-screen"
+  >
+
+    <div class="start-card">
+
+      <h2>
+        Lexicon Crossword Edition
+      </h2>
+
+
+      <p>
+        Enter your Valoriz email address to start the challenge.
+      </p>
+
+
+      <input
+        type="email"
+        id="emailInput"
+        placeholder="yourname@valoriz.com"
+        autocomplete="email"
+      />
+
+
+      <div
+        id="emailError"
+        class="email-error"
+      ></div>
+
+
+      <button
+        id="startBtn"
+        onclick="startGame()"
+      >
+        Start Challenge
+      </button>
+
+
+      <p class="challenge-info">
+
+        ⏱️ You will have 10 minutes to complete the crossword.
+
+        <br>
+
+        🔒 You will only have one chance to participate.
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       HEADER
+  ========================================= -->
 
   <div class="header">
 
@@ -288,8 +675,33 @@
   </div>
 
 
-  <div class="game-container">
+  <!-- =========================================
+       GAME
+  ========================================= -->
 
+  <div
+    id="gameContainer"
+    class="game-container hidden"
+  >
+
+
+    <!-- TIMER -->
+
+    <div class="timer-container">
+
+      <div class="timer-label">
+        ⏱️ Time Remaining
+      </div>
+
+
+      <div id="timer">
+        10:00
+      </div>
+
+    </div>
+
+
+    <!-- CROSSWORD -->
 
     <div class="crossword-wrapper">
 
@@ -301,14 +713,20 @@
     </div>
 
 
+    <!-- CLUES -->
+
     <div class="clues">
 
-      <h2>🧩 Clues</h2>
+      <h2>
+        🧩 Clues
+      </h2>
 
 
       <div class="clue">
 
-        <span class="clue-number">1.</span>
+        <span class="clue-number">
+          1.
+        </span>
 
         A retailer uses historical sales, current demand, and lead times to determine how much stock each store should receive. The goal is to avoid both excess inventory and products going out of stock.
 
@@ -317,7 +735,9 @@
 
       <div class="clue">
 
-        <span class="clue-number">2.</span>
+        <span class="clue-number">
+          2.
+        </span>
 
         An e-commerce platform automatically adjusts the price of a product depending on factors such as demand, available stock, competitor prices, and buying patterns.
 
@@ -326,7 +746,9 @@
 
       <div class="clue">
 
-        <span class="clue-number">3.</span>
+        <span class="clue-number">
+          3.
+        </span>
 
         A customer searches for “running shoes” on an e-commerce website. The platform analyzes relevance, popularity, user behavior, and product information to decide which products appear first.
 
@@ -335,7 +757,9 @@
 
       <div class="clue">
 
-        <span class="clue-number">4.</span>
+        <span class="clue-number">
+          4.
+        </span>
 
         A retailer analyzes thousands of transactions and discovers that customers who purchase certain products are significantly more likely to purchase another product in the same transaction.
 
@@ -344,7 +768,9 @@
 
       <div class="clue">
 
-        <span class="clue-number">5.</span>
+        <span class="clue-number">
+          5.
+        </span>
 
         A company divides its customers into distinct groups based on characteristics such as purchasing behavior, preferences, demographics, and spending patterns, allowing it to tailor its marketing strategies.
 
@@ -352,6 +778,8 @@
 
     </div>
 
+
+    <!-- SUBMIT -->
 
     <div class="submit-section">
 
@@ -371,7 +799,6 @@
 
     </div>
 
-
   </div>
 
 
@@ -381,19 +808,31 @@
 
 /*
 ============================================================
-CROSSWORD ANSWERS
+GOOGLE APPS SCRIPT URL
 ============================================================
 
-These answers are ONLY used to construct the crossword
-grid and determine where the active cells are.
+IMPORTANT:
 
-The player's answers are NOT checked against them.
+Replace the URL below with your deployed
+Google Apps Script Web App URL.
 
 ============================================================
 */
 
 
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwGvOIhSQWmPSlZ7VAr0a18X0Yf98I8TdnwEiRoU6rf326fbOyMex-woCNfcgcjZ1ep/exec";
+
+
+/*
+============================================================
+CROSSWORD CONFIGURATION
+============================================================
+*/
+
+
 const rows = 21;
+
 const cols = 20;
 
 
@@ -401,41 +840,70 @@ const words = [
 
   {
     number: 1,
-    answer: "INVENTORYOPTIMIZATION",
+
+    answer:
+      "INVENTORYOPTIMIZATION",
+
     row: 0,
+
     col: 5,
+
     direction: "down"
   },
+
 
   {
     number: 2,
-    answer: "DYNAMICPRICING",
+
+    answer:
+      "DYNAMICPRICING",
+
     row: 7,
+
     col: 0,
+
     direction: "down"
   },
+
 
   {
     number: 3,
-    answer: "SEARCHRANKING",
+
+    answer:
+      "SEARCHRANKING",
+
     row: 5,
+
     col: 19,
+
     direction: "down"
   },
 
+
   {
     number: 4,
-    answer: "MARKETBASKETANALYSIS",
+
+    answer:
+      "MARKETBASKETANALYSIS",
+
     row: 5,
+
     col: 0,
+
     direction: "across"
   },
 
+
   {
     number: 5,
-    answer: "CUSTOMERSEGMENTATION",
+
+    answer:
+      "CUSTOMERSEGMENTATION",
+
     row: 13,
+
     col: 0,
+
     direction: "across"
   }
 
@@ -445,6 +913,13 @@ const words = [
 const grid = [];
 
 
+/*
+============================================================
+CREATE GRID
+============================================================
+*/
+
+
 for (
   let r = 0;
   r < rows;
@@ -452,6 +927,7 @@ for (
 ) {
 
   grid[r] = [];
+
 
   for (
     let c = 0;
@@ -474,11 +950,21 @@ for (
 }
 
 
+/*
+============================================================
+PLACE WORDS
+============================================================
+*/
+
+
 words.forEach(word => {
 
-  let endRow = word.row;
+  let endRow =
+    word.row;
 
-  let endCol = word.col;
+
+  let endCol =
+    word.col;
 
 
   if (
@@ -520,9 +1006,12 @@ words.forEach(word => {
     i++
   ) {
 
-    let r = word.row;
+    let r =
+      word.row;
 
-    let c = word.col;
+
+    let c =
+      word.col;
 
 
     if (
@@ -574,12 +1063,17 @@ words.forEach(word => {
     }
 
 
-    grid[r][c].active = true;
+    grid[r][c].active =
+      true;
 
-    grid[r][c].letter = letter;
+
+    grid[r][c].letter =
+      letter;
 
 
-    if (i === 0) {
+    if (
+      i === 0
+    ) {
 
       grid[r][c].numbers.push(
         word.number
@@ -590,6 +1084,13 @@ words.forEach(word => {
   }
 
 });
+
+
+/*
+============================================================
+CREATE CROSSWORD UI
+============================================================
+*/
 
 
 const crossword =
@@ -684,15 +1185,6 @@ for (
         c;
 
 
-      /*
-      The correct letter is stored internally
-      only because it is part of the crossword
-      construction.
-
-      IT IS NOT USED TO VALIDATE SUBMISSIONS.
-      */
-
-
       input.dataset.answer =
         cellData.letter;
 
@@ -761,6 +1253,13 @@ for (
 }
 
 
+/*
+============================================================
+GET INPUTS
+============================================================
+*/
+
+
 function getInputs() {
 
   return Array.from(
@@ -770,6 +1269,13 @@ function getInputs() {
   );
 
 }
+
+
+/*
+============================================================
+NEXT CELL
+============================================================
+*/
 
 
 function moveToNextCell(
@@ -810,6 +1316,13 @@ function moveToNextCell(
 }
 
 
+/*
+============================================================
+PREVIOUS CELL
+============================================================
+*/
+
+
 function moveToPreviousCell(
   row,
   col
@@ -848,21 +1361,773 @@ function moveToPreviousCell(
 
 /*
 ============================================================
-SUBMIT
+GAME VARIABLES
+============================================================
+*/
+
+
+let timeLeft =
+  10 * 60;
+
+
+let countdown =
+  null;
+
+
+let currentUserEmail =
+  null;
+
+
+let gameStarted =
+  false;
+
+
+let gameFinished =
+  false;
+
+
+/*
+============================================================
+CHECK EMAIL WITH GOOGLE SHEET
 ============================================================
 
-IMPORTANT:
-
-There is NO answer validation here.
-
-The only requirement is that every active cell
-has something entered in it.
+Uses JSONP because a GitHub Pages website and
+Google Apps Script are different domains.
 
 ============================================================
 */
 
 
+function checkEmail(email) {
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const callbackName =
+        "emailCheck_" +
+        Date.now();
+
+
+      window[
+        callbackName
+      ] = function(result) {
+
+        delete window[
+          callbackName
+        ];
+
+
+        script.remove();
+
+
+        resolve(result);
+
+      };
+
+
+      const script =
+        document.createElement(
+          "script"
+        );
+
+
+      script.src =
+        GOOGLE_SCRIPT_URL +
+        "?email=" +
+        encodeURIComponent(
+          email
+        ) +
+        "&callback=" +
+        callbackName;
+
+
+      script.onerror =
+        function() {
+
+          delete window[
+            callbackName
+          ];
+
+
+          script.remove();
+
+
+          reject(
+            new Error(
+              "Unable to contact server."
+            )
+          );
+
+        };
+
+
+      document.body.appendChild(
+        script
+      );
+
+    }
+  );
+
+}
+
+
+/*
+============================================================
+SEND START REQUEST
+============================================================
+
+This records the attempt immediately.
+
+============================================================
+*/
+
+
+function recordStart() {
+
+  const formData =
+    new URLSearchParams();
+
+
+  formData.append(
+    "action",
+    "start"
+  );
+
+
+  formData.append(
+    "email",
+    currentUserEmail
+  );
+
+
+  formData.append(
+    "userAgent",
+    navigator.userAgent
+  );
+
+
+  return fetch(
+    GOOGLE_SCRIPT_URL,
+    {
+
+      method: "POST",
+
+      body: formData,
+
+      mode: "no-cors"
+
+    }
+  );
+
+}
+
+
+/*
+============================================================
+START GAME
+============================================================
+*/
+
+
+async function startGame() {
+
+  const emailInput =
+    document.getElementById(
+      "emailInput"
+    );
+
+
+  const emailError =
+    document.getElementById(
+      "emailError"
+    );
+
+
+  const startBtn =
+    document.getElementById(
+      "startBtn"
+    );
+
+
+  const email =
+    emailInput.value
+      .trim()
+      .toLowerCase();
+
+
+  emailError.textContent =
+    "";
+
+
+  /*
+  -----------------------------------------------
+  Required
+  -----------------------------------------------
+  */
+
+  if (
+    email === ""
+  ) {
+
+    emailError.textContent =
+      "Please enter your Valoriz email address.";
+
+    return;
+
+  }
+
+
+  /*
+  -----------------------------------------------
+  Local validation
+  -----------------------------------------------
+  */
+
+  const emailPattern =
+    /^[^\s@]+@valoriz\.com$/;
+
+
+  if (
+    !emailPattern.test(email)
+  ) {
+
+    emailError.textContent =
+      "Please enter a valid @valoriz.com email address.";
+
+    return;
+
+  }
+
+
+  /*
+  -----------------------------------------------
+  Disable button
+  -----------------------------------------------
+  */
+
+  startBtn.disabled =
+    true;
+
+
+  startBtn.textContent =
+    "Checking...";
+
+
+  /*
+  -----------------------------------------------
+  Check Google Sheet
+  -----------------------------------------------
+  */
+
+  try {
+
+    const result =
+      await checkEmail(
+        email
+      );
+
+
+    if (
+      !result.allowed
+    ) {
+
+      emailError.textContent =
+        result.message;
+
+
+      startBtn.disabled =
+        false;
+
+
+      startBtn.textContent =
+        "Start Challenge";
+
+
+      return;
+
+    }
+
+
+    /*
+    -----------------------------------------------
+    Set current email
+    -----------------------------------------------
+    */
+
+    currentUserEmail =
+      email;
+
+
+    /*
+    -----------------------------------------------
+    Record attempt
+    -----------------------------------------------
+    */
+
+    await recordStart();
+
+
+    /*
+    -----------------------------------------------
+    Start game
+    -----------------------------------------------
+    */
+
+    gameStarted =
+      true;
+
+
+    document
+      .getElementById(
+        "startScreen"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+
+    document
+      .getElementById(
+        "gameContainer"
+      )
+      .classList.remove(
+        "hidden"
+      );
+
+
+    startTimer();
+
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    emailError.textContent =
+      "Unable to connect to the response system. Please try again.";
+
+
+    startBtn.disabled =
+      false;
+
+
+    startBtn.textContent =
+      "Start Challenge";
+
+  }
+
+}
+
+
+/*
+============================================================
+START TIMER
+============================================================
+*/
+
+
+function startTimer() {
+
+  const timerElement =
+    document.getElementById(
+      "timer"
+    );
+
+
+  timeLeft =
+    10 * 60;
+
+
+  timerElement.textContent =
+    "10:00";
+
+
+  timerElement.classList.remove(
+    "warning"
+  );
+
+
+  countdown =
+    setInterval(
+      () => {
+
+        const minutes =
+          Math.floor(
+            timeLeft / 60
+          );
+
+
+        const seconds =
+          timeLeft % 60;
+
+
+        timerElement.textContent =
+          String(
+            minutes
+          ).padStart(
+            2,
+            "0"
+          ) +
+          ":" +
+          String(
+            seconds
+          ).padStart(
+            2,
+            "0"
+          );
+
+
+        /*
+        -------------------------------------------
+        Final minute warning
+        -------------------------------------------
+        */
+
+        if (
+          timeLeft <= 60
+        ) {
+
+          timerElement.classList.add(
+            "warning"
+          );
+
+        }
+
+
+        /*
+        -------------------------------------------
+        Time expired
+        -------------------------------------------
+        */
+
+        if (
+          timeLeft <= 0
+        ) {
+
+          clearInterval(
+            countdown
+          );
+
+
+          countdown =
+            null;
+
+
+          timerElement.textContent =
+            "00:00";
+
+
+          gameFinished =
+            true;
+
+
+          lockCrossword();
+
+
+          document
+            .getElementById(
+              "message"
+            )
+            .innerHTML = `
+
+              ⏰ <strong>Time's up!</strong>
+
+              <br><br>
+
+              The crossword has been locked.
+
+              <br><br>
+
+              Your responses have been recorded.
+
+            `;
+
+
+          document
+            .getElementById(
+              "message"
+            )
+            .className =
+              "message error";
+
+
+          /*
+          Record answers as time expired
+          */
+
+          submitToGoogleSheet(
+            "Time Expired"
+          );
+
+          return;
+
+        }
+
+
+        timeLeft--;
+
+      },
+
+      1000
+    );
+
+}
+
+
+/*
+============================================================
+SUBMIT ANSWERS TO GOOGLE SHEET
+============================================================
+*/
+
+
+function submitToGoogleSheet(
+  status
+) {
+
+  if (
+    !currentUserEmail
+  ) {
+
+    return;
+
+  }
+
+
+  const inputs =
+    getInputs();
+
+
+  /*
+  -----------------------------------------------
+  Collect answers by crossword number
+  -----------------------------------------------
+  */
+
+
+  const answers = {
+
+    answer1: "",
+
+    answer2: "",
+
+    answer3: "",
+
+    answer4: "",
+
+    answer5: ""
+
+  };
+
+
+  /*
+  Map each cell to its crossword word.
+  The input cells have row/column positions,
+  so we reconstruct each answer using the
+  original word definitions.
+  */
+
+
+  words.forEach(
+    word => {
+
+      let answer = "";
+
+
+      for (
+        let i = 0;
+        i < word.answer.length;
+        i++
+      ) {
+
+        let r =
+          word.row;
+
+
+        let c =
+          word.col;
+
+
+        if (
+          word.direction === "across"
+        ) {
+
+          c += i;
+
+        }
+
+        else {
+
+          r += i;
+
+        }
+
+
+        const input =
+          inputs.find(
+            element =>
+
+              Number(
+                element.dataset.row
+              ) === r &&
+
+              Number(
+                element.dataset.col
+              ) === c
+          );
+
+
+        if (
+          input
+        ) {
+
+          answer +=
+            input.value
+              .trim()
+              .toUpperCase();
+
+        }
+
+      }
+
+
+      answers[
+        "answer" +
+        word.number
+      ] =
+        answer;
+
+    }
+  );
+
+
+  /*
+  -----------------------------------------------
+  Create request
+  -----------------------------------------------
+  */
+
+
+  const formData =
+    new URLSearchParams();
+
+
+  formData.append(
+    "action",
+    "submit"
+  );
+
+
+  formData.append(
+    "email",
+    currentUserEmail
+  );
+
+
+  formData.append(
+    "status",
+    status
+  );
+
+
+  formData.append(
+    "answer1",
+    answers.answer1
+  );
+
+
+  formData.append(
+    "answer2",
+    answers.answer2
+  );
+
+
+  formData.append(
+    "answer3",
+    answers.answer3
+  );
+
+
+  formData.append(
+    "answer4",
+    answers.answer4
+  );
+
+
+  formData.append(
+    "answer5",
+    answers.answer5
+  );
+
+
+  formData.append(
+    "userAgent",
+    navigator.userAgent
+  );
+
+
+  /*
+  -----------------------------------------------
+  Send to Google Apps Script
+  -----------------------------------------------
+  */
+
+  fetch(
+    GOOGLE_SCRIPT_URL,
+    {
+
+      method: "POST",
+
+      body: formData,
+
+      mode: "no-cors"
+
+    }
+  )
+    .then(
+      () => {
+
+        console.log(
+          "Response sent to Google Sheet."
+        );
+
+      }
+    )
+    .catch(
+      error => {
+
+        console.error(
+          "Unable to send response:",
+          error
+        );
+
+      }
+    );
+
+}
+
+
+/*
+============================================================
+SUBMIT CROSSWORD
+============================================================
+*/
+
+
 function submitCrossword() {
+
+  if (
+    !gameStarted ||
+    gameFinished
+  ) {
+
+    return;
+
+  }
+
 
   const inputs =
     getInputs();
@@ -881,7 +2146,9 @@ function submitCrossword() {
 
 
   /*
-  Check only whether all cells are filled.
+  -----------------------------------------------
+  Check all cells
+  -----------------------------------------------
   */
 
 
@@ -897,12 +2164,19 @@ function submitCrossword() {
   ) {
 
     message.innerHTML = `
+
       👀 <strong>Nice try...</strong>
+
       <br>
+
       You haven't filled in the whole crossword yet.
+
       <br><br>
+
       Finish it first. I believe in you. 😌
+
     `;
+
 
     message.className =
       "message error";
@@ -914,17 +2188,58 @@ function submitCrossword() {
 
 
   /*
-  NO ANSWER CHECKING.
+  -----------------------------------------------
+  Stop timer
+  -----------------------------------------------
+  */
 
-  Any completed crossword is accepted.
+
+  if (
+    countdown
+  ) {
+
+    clearInterval(
+      countdown
+    );
+
+
+    countdown =
+      null;
+
+  }
+
+
+  gameFinished =
+    true;
+
+
+  /*
+  -----------------------------------------------
+  Send response
+  -----------------------------------------------
+  */
+
+
+  submitToGoogleSheet(
+    "Submitted"
+  );
+
+
+  /*
+  -----------------------------------------------
+  Success message
+  -----------------------------------------------
   */
 
 
   message.innerHTML = `
 
     <div class="success-title">
+
       💅 SUBMISSION LOCKED
+
     </div>
+
 
     <div class="success-text">
 
@@ -961,7 +2276,9 @@ function submitCrossword() {
 
 
   /*
-  Lock the crossword after submission.
+  -----------------------------------------------
+  Lock crossword
+  -----------------------------------------------
   */
 
 
@@ -981,7 +2298,40 @@ function submitCrossword() {
 }
 
 
+/*
+============================================================
+LOCK CROSSWORD
+============================================================
+*/
+
+
+function lockCrossword() {
+
+  const inputs =
+    getInputs();
+
+
+  inputs.forEach(
+    input => {
+
+      input.disabled =
+        true;
+
+    }
+  );
+
+
+  document
+    .getElementById(
+      "submitBtn"
+    )
+    .disabled =
+      true;
+
+}
+
 </script>
 
 </body>
+
 </html>
